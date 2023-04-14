@@ -1,4 +1,6 @@
-# cek-ongkir-app
+# product-search-app
+
+You can search and get the detail information of the product
 
 ## Project setup
 ```
