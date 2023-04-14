@@ -1,27 +1,85 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="app">
+    <div id="titleText">
+      <h1>Cek Product</h1>
+    </div>
+    <div id="formInput">
+      <InputApp @changeInput="getValueChildSearch" :typeInput="typeInputSearch" :textPlaceholder="textPlaceholderSearch"/>
+      <ButtonApp @clicked-btn="searchProduct" :btnText="btnText" />
+    </div>
+    <div id="listContainer">
+      <ProductList :productList="productData"></ProductList>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent, ref } from 'vue';
+import ButtonApp from './components/ButtonApp.vue'
+import InputApp from './components/InputApp.vue'
+import {Product} from './types/interfaceData';
+import {getData} from './utils/fetch'; 
+import ProductList from './components/ProductList.vue';
+
+const urlProduct = "https://dummyjson.com/products"
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
-  }
+    ButtonApp, InputApp, ProductList
+  },
+  setup() {
+    const btnText = ref<string>("Search");
+    const textPlaceholderSearch = ref<string>("Search")
+    const typeInputSearch = ref<string>("text")
+    const productDataPromise = getData<any>(urlProduct)
+    let originalData = ref<Product[]>([])
+    let productData = ref<Product[]>([])
+    productDataPromise.then((data: any) => {
+      console.log(data)
+      originalData.value = data.products
+      productData.value = data.products
+    })
+
+    return { btnText, textPlaceholderSearch, typeInputSearch, productData, originalData }
+  },
+  data() {
+    return {
+      search: "" 
+    }
+  },
+  methods: {
+    getValueChildSearch(value: string) {
+      this.search = value
+      if (value === "") {
+        this.productData = [...this.originalData]
+      }
+    },
+    searchProduct() {
+      this.productData = this.originalData.filter((el: Product) => el.title.includes(this.search))
+    }
+  },
 });
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .app {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+  }
+
+  #titleText > h1 {
+    font-size: 6rem;
+    background: -webkit-linear-gradient(rgb(11, 153, 163), rgb(214, 180, 180));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #formInput {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+  };
+
 </style>
