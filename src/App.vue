@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div id="titleText">
-      <h1>Cek Product</h1>
+      <h1>ZenPy Product</h1>
     </div>
     <div id="formInput">
       <InputApp @changeInput="getValueChildSearch" :typeInput="typeInputSearch" :textPlaceholder="textPlaceholderSearch"/>
@@ -71,9 +71,16 @@ export default defineComponent({
 
   #titleText > h1 {
     font-size: 6rem;
-    background: -webkit-linear-gradient(rgb(11, 153, 163), rgb(214, 180, 180));
+    background: -webkit-linear-gradient(rgb(11, 153, 163), rgb(31, 28, 28));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  @media only screen and (max-width: 600px) {
+    #titleText > h1 {
+      font-size: 3rem;
+    
+    }
   }
 
   #formInput {

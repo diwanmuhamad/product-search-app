@@ -15,7 +15,6 @@ export default defineComponent({
   },
   methods: {
     onClickEvent() {
-      console.log('tes')
       this.$emit('clicked-btn', "")
     }
   }
