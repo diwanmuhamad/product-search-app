@@ -1,15 +1,19 @@
 <template>
-    <div v-if="productList?.length !== 0">
-        <div v-for="(product,index) in productList" v-bind:key="index" class="card">
-            <div class="imgBox">
-                <img :src="product.thumbnail" alt="ZenPy" class="mouse">
-            </div>
-    
-            <div class="contentBox">
-                <h3 class="title">{{ product.title }}</h3>
-                <h2 class="price">{{ product.price }} €</h2>
-                <!-- <a href="#" class="buy">Buy Now</a> -->
-            </div>
+    <div v-if="productList?.length !== 0 || isLoading">
+        <div v-for="(product,index) in productList" v-bind:key="index" >
+            <a :href="'/product/' + product.id" >
+                <div class="card">
+                    <div class="imgBox">
+                        <img :src="product.thumbnail" alt="ZenPy" class="mouse">
+                    </div>
+            
+                    <div class="contentBox">
+                        <h3 class="title">{{ product.title }}</h3>
+                        <h2 class="price">{{ product.price }} €</h2>
+                        <!-- <a href="#" class="buy">Buy Now</a> -->
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
     <div class="notFound" v-else>
@@ -25,6 +29,9 @@ export default defineComponent({
     props: {
         productList: {
             type: Object as PropType<Product[]>
+        },
+        isLoading: {
+            type: Boolean,
         }
     },
  
